@@ -1,11 +1,11 @@
 USE barwon_health_care_system;
 
 -- 1  -  SELECT: Retrieve all columns from the Doctor table.
-SELECT * FROM doctors
+SELECT * FROM doctors;
 
 -- 2  -  ORDER BY: List patients in the Patient table in ascending order of their ages.
 SELECT * FROM patients 
-ORDER BY age
+ORDER BY age;
 
 -- 3  -  OFFSET FETCH: Retrieve the first 10 patients from the Patient table, starting from the 5th record.
 SELECT * FROM patients
@@ -138,22 +138,17 @@ DELETE FROM patients WHERE ur_number = 1005;
 
 -- 27 -  Transaction: Insert a new doctor and a patient, ensuring both operations succeed or fail together.
 BEGIN TRANSACTION 
-	BEGIN TRY
-		INSERT INTO doctors
-		(name, phone, email, year_of_experience, specialty)
-		VALUES
-		('saleh', '737801951', 'saleh@gmail.com', 7, 'Dermatology')
-	
-		INSERT INTO patients
-		(ur_number, name, phone, email, country, city, street, age, medicare_card_number, doctor_id)
-		VALUES
-		(1001, 'Ahmed Al-Farsi', '0501234567', 'ahmed.farsi@mail.com', 'Saudi Arabia', 'Riyadh', 'King Fahd Rd', 34, 'MC1023456', 12)
+	INSERT INTO doctors
+	(name, phone, email, year_of_experience, specialty)
+	VALUES
+	('saleh', '737801951', 'saleh@gmail.com', 7, 'Dermatology')
 
-	END TRY 
-	BEGIN CATCH
-		ROLLBACK; 
-	END CATCH 
+	INSERT INTO patients
+	(ur_number, name, phone, email, country, city, street, age, medicare_card_number, doctor_id)
+	VALUES
+	(1001, 'Ahmed Al-Farsi', '0501234567', 'ahmed.farsi@mail.com', 'Saudi Arabia', 'Riyadh', 'King Fahd Rd', 34, 'MC1023456', 12)
 COMMIT 
+ROLLBACK;
 
 -- 28 -  View: Create a view that combines patient and doctor information for easy access.
 CREATE VIEW patients_doctors AS 
@@ -166,17 +161,17 @@ SELECT
 	d.specialty
 FROM patients  p 
 FULL JOIN doctors d 
-ON p.doctor_id = d.id
+ON p.doctor_id = d.id;
 
 -- 29 -  Index: Create an index on the 'phone' column of the Patient table to improve search performance.
 CREATE NONCLUSTERED INDEX idx_patinets_phone 
-ON patients(phone)  
+ON patients(phone);
 
 -- 30 -  Backup: Perform a backup of the entire database to ensure data safety.
 BACKUP DATABASE barwon_health_care_system  
 TO DISK = 'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\Backup\barwon_health_care_system.bak'
 WITH INIT,  
-NAME = 'barwon_health_care_system_backup'
+NAME = 'barwon_health_care_system_backup';
 
 -- additional Restore: database from the backup *_*
 DROP DATABASE barwon_health_care_system;  
